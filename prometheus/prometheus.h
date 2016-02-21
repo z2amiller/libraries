@@ -23,7 +23,7 @@ class PrometheusClient {
   bool Send();
  private:
   const String server_;
-  const uint16_t port;
+  const uint16_t port_;
   const String url_;
   String messages_;
   WiFiClient client_;

@@ -12,14 +12,14 @@ PrometheusClient::PrometheusClient(const String& server,
 void PrometheusClient::AddGauge(const String& name,
                                 const float value,
                                 const String& extra_keys) {
-  const char needs_comma = extra_keys.startsWith(",") ? '' : ',';
+  const String needs_comma = extra_keys.startsWith(",") ? "" : ",";
   messages_ += "# TYPE " + name + " gauge\n" +
-      name + "{chipid=\"" + String(ESP.getChipId()) + \"" +
+      name + "{chipid=\"" + String(ESP.getChipId()) + "\"" +
       needs_comma + extra_keys + "} " + String(value) + "\n";
 }
 
 bool PrometheusClient::Send() {
-  if (!client_.connect()) {
+  if (!client_.connect(server_.c_str(), port_)) {
     return false;
   }
   const int content_length = messages_.length();
@@ -31,11 +31,12 @@ bool PrometheusClient::Send() {
       "\r\n" +
       messages_);
   delay(100);
-  while(client.available()) {
-    String line = client.readStringUntil('\r');
+  while(client_.available()) {
+    String line = client_.readStringUntil('\r');
     // maybe Serial.print this.
   }
-  client.stop();
+  client_.flush();
+  client_.stop();
 }
 
 
