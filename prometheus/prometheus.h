@@ -2,7 +2,8 @@
 
 class PrometheusClient {
  public:
-  // Create a new prometheus client connecting to server:port.
+  // Create a new prometheus client connecting to server:port,
+  // with "job" and "instance".  (See prometheus pushgateway docs)
   PrometheusClient(const String& server,
                    const uint16_t port,
                    const String& job,
