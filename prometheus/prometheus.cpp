@@ -20,6 +20,7 @@ void PrometheusClient::AddGauge(const String& name,
 
 bool PrometheusClient::Send() {
   if (!client_.connect(server_.c_str(), port_)) {
+    Clear();
     return false;
   }
   const int content_length = messages_.length();
@@ -35,8 +36,10 @@ bool PrometheusClient::Send() {
     String line = client_.readStringUntil('\r');
     // maybe Serial.print this.
   }
+  Clear();
   client_.flush();
   client_.stop();
+  return true;
 }
 
 
