@@ -32,7 +32,7 @@ bool PrometheusClient::Send() {
   return true;
 }
 
-String& makeHeader(const String& name, const PrometheusType type) {
+String makeHeader(const String& name, const PrometheusType type) {
   return "# TYPE " + name + " " + stringFromPrometheusType(type) + "\n";
 }
 
