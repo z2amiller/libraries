@@ -9,13 +9,8 @@ PrometheusClient::PrometheusClient(const String& server,
       port_(port),
       url_("/metrics/job/" + job + "/instance/" + instance) {}
 
-void PrometheusClient::AddGauge(const String& name,
-                                const float value,
-                                const String& extra_keys) {
-  const String needs_comma = extra_keys.startsWith(",") ? "" : ",";
-  messages_ += "# TYPE " + name + " gauge\n" +
-      name + "{chipid=\"" + String(ESP.getChipId()) + "\"" +
-      needs_comma + extra_keys + "} " + String(value) + "\n";
+void PrometheusClient::AddMetric(const BaseMetric& metric) {
+  messages_ += metric.Format();
 }
 
 bool PrometheusClient::Send() {
@@ -42,4 +37,39 @@ bool PrometheusClient::Send() {
   client_.flush();
   client_.stop();
   return true;
+}
+
+String& makeHeader(const String& name, const PrometheusType type) {
+  return "# TYPE " + name + " " + stringFromPrometheusType(type) + "\n";
+}
+
+MapMetric::MapMetric(const String& name,
+                     const String& dimension,
+                     const PrometheusType type)
+    : name_(name),
+      dimension_(dimension),
+      type_(type),
+      messages_(makeHeader(name, type)) {}
+
+void MapMetric::Add(const String& key, const float value) {
+  messages_ += name_ + "{" + dimension_ + "=\"" + key + "\"} "
+            + String(value) + "\n";
+}
+
+const String& MapMetric::Format() const {
+  return messages_;
+}
+
+Metric::Metric(const String& name,
+               const PrometheusType type)
+    : name_(name),
+      type_(type),
+      messages_(makeHeader(name, type)) {}
+
+void Metric::Add(const float value) {
+  messages_ += name_ + " " + String(value) + "\n";
+}
+
+const String& Metric::Format() const {
+  return messages_;
 }

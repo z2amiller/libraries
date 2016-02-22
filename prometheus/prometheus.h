@@ -3,7 +3,17 @@
 enum PrometheusType {
   GAUGE,
   RATE
+};
+
+static inline const char *stringFromPrometheusType(PrometheusType t) {
+  static const char *ptstrings[] = { "gauge", "rate" };
+  return ptstrings[t];
 }
+
+class BaseMetric {
+ public:
+   virtual const String& Format() const = 0;
+};
 
 class PrometheusClient {
  public:
@@ -13,11 +23,7 @@ class PrometheusClient {
                    const uint16_t port,
                    const String& job,
                    const String& instance);
-  // AddGauge adds a gauge metric to be updated to the prometheus server.
-  //     "extra_keys" are just copied as-is into the args.
-  void AddGauge(const String& name,
-                const float value,
-                const String& extra_keys = "");
+  void AddMetric(const BaseMetric& metric);
   // TODO(z2amiller): Implement rates, etc.
 
   // Clear will erase any pending unsent messages.
@@ -35,17 +41,28 @@ class PrometheusClient {
   WiFiClient client_;
 };
 
-class PrometheusMap {
+class MapMetric : public BaseMetric {
  public:
-  PrometheusMap(const String& name,
-                const String& dimension,
-                const PrometheusType type = GAUGE)
-    : name_(name),
-      dimension_(dimension),
-      type_(type) {}
-  Add(const String& key,
-      const float value);
-  
+  MapMetric(const String& name,
+            const String& dimension,
+            const PrometheusType type = GAUGE);
+  void Add(const String& key, const float value);
+  const String& Format() const;
+ private:
+    const String name_;
+    const String dimension_;
+    const PrometheusType type_;
+    String messages_;
+};
 
-  
-                
+class Metric : public BaseMetric {
+ public:
+   Metric(const String& name,
+          const PrometheusType type = GAUGE);
+   void Add(const float value);
+   const String& Format() const;
+  private:
+   const String name_;
+   const PrometheusType type_;
+   String messages_;
+};
