@@ -1,5 +1,10 @@
 #include <ESP8266WiFi.h>
 
+enum PrometheusType {
+  GAUGE,
+  RATE
+}
+
 class PrometheusClient {
  public:
   // Create a new prometheus client connecting to server:port,
@@ -29,3 +34,18 @@ class PrometheusClient {
   String messages_;
   WiFiClient client_;
 };
+
+class PrometheusMap {
+ public:
+  PrometheusMap(const String& name,
+                const String& dimension,
+                const PrometheusType type = GAUGE)
+    : name_(name),
+      dimension_(dimension),
+      type_(type) {}
+  Add(const String& key,
+      const float value);
+  
+
+  
+                

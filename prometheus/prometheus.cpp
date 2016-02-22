@@ -20,6 +20,7 @@ void PrometheusClient::AddGauge(const String& name,
 
 bool PrometheusClient::Send() {
   if (!client_.connect(server_.c_str(), port_)) {
+   Serial.println("Could not connect!");
     Clear();
     return false;
   }
@@ -34,6 +35,7 @@ bool PrometheusClient::Send() {
   delay(100);
   while(client_.available()) {
     String line = client_.readStringUntil('\r');
+    Serial.println(line);
     // maybe Serial.print this.
   }
   Clear();
@@ -41,5 +43,3 @@ bool PrometheusClient::Send() {
   client_.stop();
   return true;
 }
-
-
