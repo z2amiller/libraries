@@ -24,7 +24,6 @@ class PrometheusClient {
                    const String& job,
                    const String& instance);
   void AddMetric(const BaseMetric& metric);
-  // TODO(z2amiller): Implement rates, etc.
 
   // Clear will erase any pending unsent messages.
   void Clear() {

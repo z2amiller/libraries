@@ -15,7 +15,6 @@ void PrometheusClient::AddMetric(const BaseMetric& metric) {
 
 bool PrometheusClient::Send() {
   if (!client_.connect(server_.c_str(), port_)) {
-   Serial.println("Could not connect!");
     Clear();
     return false;
   }
@@ -27,12 +26,6 @@ bool PrometheusClient::Send() {
       "Content-Length: " + String(content_length) + "\r\n" +
       "\r\n" +
       messages_);
-  delay(100);
-  while(client_.available()) {
-    String line = client_.readStringUntil('\r');
-    Serial.println(line);
-    // maybe Serial.print this.
-  }
   Clear();
   client_.flush();
   client_.stop();
