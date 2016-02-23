@@ -1,9 +1,16 @@
 class i2cBase {
  public:
+  // With the single argument constructor, only set the address,
+  // but do not start the Wire library.
+  i2cBase(const uint8_t dev_addr)
+    : i2c_addr_(dev_addr) {}
+  // If passed the SDA and SCL pins, the constructor will
+  // initialize the Wire library.
   i2cBase(const uint8_t dev_addr,
           const uint8_t sda,
           const uint8_t scl):
-  void Init();
+
+  virtual void Init() {};
 
  protected:
    uint8_t read8(const uint8_t addr);
@@ -12,6 +19,4 @@ class i2cBase {
 
  private:
   uint8_t i2c_addr_;
-  uint8_t sda_pin_;
-  uint8_t scl_pin_;
 };

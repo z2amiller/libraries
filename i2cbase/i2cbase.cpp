@@ -3,12 +3,8 @@
 i2cBase::i2cBase(const uint8_t dev_addr,
                  const uint8_t sda,
                  const uint8_t scl)
-    : i2c_addr_(dev_addr),
-      sda_pin_(sda),
-      scl_pin_(scl) {}
-
-i2cBase::Init() {
-  Wire.begin(sda_pin_, scl_pin_);
+    : i2c_addr_(dev_addr) {
+ Wire.begin(sda, scl)
 }
 
 void i2cBase::write8(const uint8_t addr, const uint8_t data) {
