@@ -1,3 +1,5 @@
+#include "Arduino.h"
+
 class i2cBase {
  public:
   // With the single argument constructor, only set the address,
@@ -8,7 +10,7 @@ class i2cBase {
   // initialize the Wire library.
   i2cBase(const uint8_t dev_addr,
           const uint8_t sda,
-          const uint8_t scl):
+          const uint8_t scl);
 
   virtual void Init() {};
 
