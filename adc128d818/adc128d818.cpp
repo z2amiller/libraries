@@ -1,13 +1,13 @@
+#include "Arduino.h"
 #include "adc128d818.h"
 
 // TODO(z2amiller): Have an options class to encapsulate these params.
-adc128d818::Init() {
+void adc128d818::Init() {
   write8(0x00, 0x00); // disable all.
   pollUntilReady();
   write8(0x0B, 0x02 | 0x01); // Mode 1, external vref.
   write8(0x07, 0x01);        // continuous conversion.
   write8(0x00, 0x02 | 0x01); // interrupt enable, start ADC.
-  return true;
 }
 
 // TODO(z2amiller):  Have a maximum allowed elapsed time?
