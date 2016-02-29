@@ -2,15 +2,11 @@
 
 class i2cBase {
  public:
-  // With the single argument constructor, only set the address,
-  // but do not start the Wire library.
+  // i2cbase targets an i2c device at this address.
+  // i2cbase expects the Wire library to be initialized,
+  // i.e. Wire.begin() or Wire.begin(SDAPIN, SCLPIN).
   i2cBase(const uint8_t dev_addr)
     : i2c_addr_(dev_addr) {}
-  // If passed the SDA and SCL pins, the constructor will
-  // initialize the Wire library.
-  i2cBase(const uint8_t dev_addr,
-          const uint8_t sda,
-          const uint8_t scl);
 
   virtual void Init() {};
 

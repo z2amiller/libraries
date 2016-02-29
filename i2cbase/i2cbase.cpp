@@ -1,13 +1,6 @@
 #include "i2cbase.h"
 #include <Wire.h>
 
-i2cBase::i2cBase(const uint8_t dev_addr,
-                 const uint8_t sda,
-                 const uint8_t scl)
-    : i2c_addr_(dev_addr) {
- Wire.begin(sda, scl);
-}
-
 void i2cBase::write8(const uint8_t addr, const uint8_t data) {
   Wire.beginTransmission(i2c_addr_);
   Wire.write(addr);
