@@ -32,6 +32,7 @@ class PrometheusClient {
   // Send will post any unsent messages to the prometheus server and clear
   //     the list of pending messages.
   bool Send();
+  bool PrintSerial();
  private:
   const String server_;
   const uint16_t port_;

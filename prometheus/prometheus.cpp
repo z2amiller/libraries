@@ -32,6 +32,10 @@ bool PrometheusClient::Send() {
   return true;
 }
 
+bool PrometheusClient::PrintSerial() {
+  Serial.println(messages_);
+}
+
 String makeHeader(const String& name, const PrometheusType type) {
   return "# TYPE " + name + " " + stringFromPrometheusType(type) + "\n";
 }
