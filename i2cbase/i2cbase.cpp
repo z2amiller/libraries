@@ -31,3 +31,19 @@ uint16_t i2cBase::read16(const uint8_t addr) {
   Wire.endTransmission();
   return ret;
 }
+
+uint32_t i2cbase::read24(const uint8_t addr) {
+  Wire.beginTransmission(i2c_addr_);
+  Wire.write(addr);
+  Wire.endTransmission();
+  Wire.beginTransmission(i2c_addr_);
+  Wire.requestFrom(i2c_addr_, (uint8_t)3);
+  uint32_t ret = Wire.read();
+  ret <<= 8;
+  ret |= Wire.read();
+  ret <<= 8;
+  ret |= Wire.read();
+  Wire.endTransmission();
+  return ret;
+}
+
