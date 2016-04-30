@@ -32,7 +32,7 @@ uint16_t i2cBase::read16(const uint8_t addr) {
   return ret;
 }
 
-uint32_t i2cbase::read24(const uint8_t addr) {
+uint32_t i2cBase::read24(const uint8_t addr) {
   Wire.beginTransmission(i2c_addr_);
   Wire.write(addr);
   Wire.endTransmission();

@@ -10,7 +10,6 @@ class i2cBase {
 
   virtual void Init() {};
 
- protected:
   uint8_t read8(const uint8_t addr);
   int8_t readS8(const uint8_t addr) {
     return (int8_t)read8(addr);
@@ -27,7 +26,7 @@ class i2cBase {
   int16_t readS16LE(const uint8_t addr) {
     return (int16_t)read16LE(addr);
   }
-  unit32_t read24(const uint8_t addr);
+  uint32_t read24(const uint8_t addr);
 
   void write8(const uint8_t addr, const uint8_t data);
 
