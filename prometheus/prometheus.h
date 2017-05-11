@@ -2,11 +2,11 @@
 
 enum PrometheusType {
   GAUGE,
-  RATE
+  COUNTER
 };
 
 static inline const char *stringFromPrometheusType(PrometheusType t) {
-  static const char *ptstrings[] = { "gauge", "rate" };
+  static const char *ptstrings[] = { "gauge", "counter" };
   return ptstrings[t];
 }
 
